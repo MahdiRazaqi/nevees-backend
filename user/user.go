@@ -35,10 +35,34 @@ func (u *User) bson() bson.M {
 	return *data
 }
 
+// Mini user data
+func (u *User) Mini() bson.M {
+	return bson.M{
+		"id":       u.ID,
+		"username": u.Username,
+		"fullname": u.Fullname,
+		"email":    u.Email,
+	}
+}
+
+// FindOne fine one user from database
+func FindOne(filter bson.M) (*User, error) {
+	u := new(User)
+	if err := u.collection().FindOne(context.Background(), filter).Decode(u); err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 // Insert user to database
 func (u *User) Insert() error {
 	u.ID = primitive.NewObjectID()
 	u.Created = time.Now()
-	_, err := u.collection().InsertOne(context.TODO(), u.bson())
+	_, err := u.collection().InsertOne(context.Background(), u.bson())
 	return err
+}
+
+// LoadByEmail for find user by email address
+func LoadByEmail(email string) (*User, error) {
+	return FindOne(bson.M{"email": email})
 }

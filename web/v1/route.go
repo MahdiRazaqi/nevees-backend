@@ -8,4 +8,5 @@ func Register(e *echo.Echo) {
 
 	authGroup := v1.Group("/auth")
 	authGroup.POST("/register", register)
+	authGroup.POST("/login", login)
 }
