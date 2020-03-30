@@ -2,7 +2,10 @@ package user
 
 import (
 	"context"
+	"errors"
 	"time"
+
+	"github.com/jeyem/passwd"
 
 	"github.com/MahdiRazaqi/nevees-backend/connection"
 	"github.com/dgrijalva/jwt-go"
@@ -56,6 +59,22 @@ func (u *User) CreateToken() (string, error) {
 	return token.SignedString([]byte("secret-nevees"))
 }
 
+// AuthByUserPass authenticate user with username and password
+func AuthByUserPass(username, password string) (*User, error) {
+	authError := errors.New("username or password not matched")
+
+	u, err := FindOne(bson.M{"username": username})
+	if err != nil {
+		return nil, authError
+	}
+
+	if !passwd.Check(password, u.Password) {
+		return nil, authError
+	}
+
+	return u, nil
+}
+
 // FindOne fine one user from database
 func FindOne(filter bson.M) (*User, error) {
 	u := new(User)
@@ -71,9 +90,4 @@ func (u *User) Insert() error {
 	u.Created = time.Now()
 	_, err := u.collection().InsertOne(context.Background(), u.bson())
 	return err
-}
-
-// LoadByUsername find user by username
-func LoadByUsername(username string) (*User, error) {
-	return FindOne(bson.M{"username": username})
 }

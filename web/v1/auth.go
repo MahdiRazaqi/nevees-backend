@@ -28,7 +28,7 @@ func register(c echo.Context) error {
 	}
 
 	u := &user.User{
-		Username:    formData.Username,
+		Username: formData.Username,
 		Email:    formData.Email,
 		Password: passwd.Make(formData.Password),
 	}
@@ -59,7 +59,7 @@ func login(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	u, err := user.LoadByUsername(formData.Username)
+	u, err := user.AuthByUserPass(formData.Username, formData.Password)
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
