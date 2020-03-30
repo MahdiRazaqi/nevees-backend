@@ -6,13 +6,19 @@ import (
 	"github.com/labstack/echo"
 )
 
-type authForm struct {
+type registerForm struct {
+	Username string `json:"username" form:"username" validate:"required" `
 	Email    string `json:"email" form:"email" validate:"required,email" `
 	Password string `json:"password" form:"password" validate:"required"`
 }
 
+type loginForm struct {
+	Username string `json:"username" form:"username" validate:"required" `
+	Password string `json:"password" form:"password" validate:"required"`
+}
+
 func register(c echo.Context) error {
-	formData := new(authForm)
+	formData := new(registerForm)
 	if err := c.Bind(formData); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
@@ -22,6 +28,7 @@ func register(c echo.Context) error {
 	}
 
 	u := &user.User{
+		Username:    formData.Username,
 		Email:    formData.Email,
 		Password: passwd.Make(formData.Password),
 	}
@@ -30,15 +37,20 @@ func register(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
+	t, err := u.CreateToken()
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
 	return c.JSON(200, echo.Map{
 		"message": "registered successfully",
-		"token":   "",
+		"token":   t,
 		"user":    u.Mini(),
 	})
 }
 
 func login(c echo.Context) error {
-	formData := new(authForm)
+	formData := new(loginForm)
 	if err := c.Bind(formData); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
@@ -47,14 +59,19 @@ func login(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	u, err := user.LoadByEmail(formData.Email)
+	u, err := user.LoadByUsername(formData.Username)
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	t, err := u.CreateToken()
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
 	return c.JSON(200, echo.Map{
-		"message": "registered successfully",
-		"token":   "",
+		"message": "login successfully",
+		"token":   t,
 		"user":    u.Mini(),
 	})
 }

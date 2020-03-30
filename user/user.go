@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/MahdiRazaqi/nevees-backend/connection"
+	"github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -45,6 +46,16 @@ func (u *User) Mini() bson.M {
 	}
 }
 
+// CreateToken generate new token
+func (u *User) CreateToken() (string, error) {
+	token := jwt.New(jwt.SigningMethodHS256)
+	claims := token.Claims.(jwt.MapClaims)
+	claims["username"] = u.Username
+	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
+
+	return token.SignedString([]byte("secret-nevees"))
+}
+
 // FindOne fine one user from database
 func FindOne(filter bson.M) (*User, error) {
 	u := new(User)
@@ -62,7 +73,7 @@ func (u *User) Insert() error {
 	return err
 }
 
-// LoadByEmail for find user by email address
-func LoadByEmail(email string) (*User, error) {
-	return FindOne(bson.M{"email": email})
+// LoadByUsername find user by username
+func LoadByUsername(username string) (*User, error) {
+	return FindOne(bson.M{"username": username})
 }
