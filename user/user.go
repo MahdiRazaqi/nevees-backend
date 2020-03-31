@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/MahdiRazaqi/nevees-backend/database"
-	"github.com/dgrijalva/jwt-go"
 	"github.com/jeyem/passwd"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -37,21 +36,11 @@ func (u *User) Mini() bson.M {
 	}
 }
 
-// CreateToken generate new token
-func (u *User) CreateToken() (string, error) {
-	token := jwt.New(jwt.SigningMethodHS256)
-	claims := token.Claims.(jwt.MapClaims)
-	claims["username"] = u.Username
-	claims["exp"] = time.Now().Add(time.Hour * 72).Unix()
-
-	return token.SignedString([]byte("secret-nevees"))
-}
-
 // AuthByUserPass authenticate user with username and password
 func AuthByUserPass(username, password string) (*User, error) {
 	authError := errors.New("username or password not matched")
 
-	u, err := FindOne(bson.M{"username": username})
+	u, err := LoadByUsername(username)
 	if err != nil {
 		return nil, authError
 	}
@@ -61,6 +50,11 @@ func AuthByUserPass(username, password string) (*User, error) {
 	}
 
 	return u, nil
+}
+
+// LoadByUsername load user from username
+func LoadByUsername(username string) (*User, error) {
+	return FindOne(bson.M{"username": username})
 }
 
 // FindOne fine one user from database

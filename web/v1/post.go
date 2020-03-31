@@ -2,16 +2,19 @@ package v1
 
 import (
 	"github.com/MahdiRazaqi/nevees-backend/post"
+	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/labstack/echo"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type postForm struct {
-	Title   string   `json:"title" form:"title"`
-	Content string   `json:"content" form:"content"`
-	Tags    []string `json:"tags" form:"tags"`
+	Title   string               `json:"title" form:"title"`
+	Content string               `json:"content" form:"content"`
+	Tags    []primitive.ObjectID `json:"tags" form:"tags"`
 }
 
 func addPost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
 	formData := new(postForm)
 	if err := c.Bind(formData); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
@@ -20,6 +23,7 @@ func addPost(c echo.Context) error {
 	p := &post.Post{
 		Title:   formData.Title,
 		Content: formData.Content,
+		User:    u.ID,
 		Tags:    formData.Tags,
 	}
 	if err := p.Insert(); err != nil {

@@ -14,7 +14,7 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/login", login)
 
 	r := v1.Group("/")
-	r.Use(middleware.JWT([]byte("secret-nevees")))
+	r.Use(middleware.JWT([]byte("secret-nevees")), userRequired)
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)

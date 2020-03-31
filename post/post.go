@@ -11,13 +11,13 @@ import (
 
 // Post model
 type Post struct {
-	ID        primitive.ObjectID `bson:"_id"`
-	Title     string             `bson:"title"`
-	Content   string             `bson:"content"`
-	User      primitive.ObjectID `bson:"user"`
-	LikeCount int                `bson:"like_count"`
-	Tags      []string           `bson:"tags"`
-	Created   time.Time          `bson:"created"`
+	ID        primitive.ObjectID   `bson:"_id"`
+	Title     string               `bson:"title"`
+	Content   string               `bson:"content"`
+	User      primitive.ObjectID   `bson:"user"`
+	LikeCount int                  `bson:"like_count"`
+	Tags      []primitive.ObjectID `bson:"tags"`
+	Created   time.Time            `bson:"created"`
 }
 
 func (p *Post) collection() *mongo.Collection {
