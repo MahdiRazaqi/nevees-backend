@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
 )
 
 // Register routes
@@ -13,16 +14,8 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/login", login)
 
 	r := v1.Group("/")
-	// r.Use()
+	r.Use(middleware.JWT([]byte("secret-nevees")))
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)
-
-	// e.GET("/api/v1", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "v1")
-	// })
-
-	// e.GET("/api/v1/", func(c echo.Context) error {
-	// 	return c.String(http.StatusOK, "v1/")
-	// })
 }
