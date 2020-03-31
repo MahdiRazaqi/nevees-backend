@@ -5,10 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/jeyem/passwd"
-
-	"github.com/MahdiRazaqi/nevees-backend/connection"
+	"github.com/MahdiRazaqi/nevees-backend/database"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jeyem/passwd"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -24,19 +23,8 @@ type User struct {
 	Created  time.Time          `bson:"created"`
 }
 
-func (u *User) collectionName() string {
-	return "user"
-}
-
 func (u *User) collection() *mongo.Collection {
-	return connection.MongoDB.Collection(u.collectionName())
-}
-
-func (u *User) bson() bson.M {
-	val, _ := bson.Marshal(u)
-	data := new(bson.M)
-	bson.Unmarshal(val, data)
-	return *data
+	return database.MongoDB.Collection("user")
 }
 
 // Mini user data
@@ -88,6 +76,6 @@ func FindOne(filter bson.M) (*User, error) {
 func (u *User) Insert() error {
 	u.ID = primitive.NewObjectID()
 	u.Created = time.Now()
-	_, err := u.collection().InsertOne(context.Background(), u.bson())
+	_, err := u.collection().InsertOne(context.Background(), database.ConvertToBson(u))
 	return err
 }

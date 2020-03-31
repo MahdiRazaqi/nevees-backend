@@ -1,9 +1,10 @@
-package connection
+package database
 
 import (
 	"context"
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -25,4 +26,12 @@ func ConnectMongo() {
 	}
 
 	MongoDB = client.Database("nevees")
+}
+
+// ConvertToBson convert interface to bson object
+func ConvertToBson(d interface{}) bson.M {
+	val, _ := bson.Marshal(d)
+	data := new(bson.M)
+	bson.Unmarshal(val, data)
+	return *data
 }
