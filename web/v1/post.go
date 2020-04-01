@@ -38,15 +38,12 @@ func addPost(c echo.Context) error {
 }
 
 func getPost(c echo.Context) error {
-	u := c.Get("user").(*user.User)
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	filter := bson.M{"_id": id, "_user": u.ID}
-
-	p, err := post.FindOne(filter)
+	p, err := post.FindOne(bson.M{"_id": id})
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
