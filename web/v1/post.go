@@ -4,6 +4,7 @@ import (
 	"github.com/MahdiRazaqi/nevees-backend/post"
 	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/labstack/echo"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -26,12 +27,32 @@ func addPost(c echo.Context) error {
 		User:    u.ID,
 		Tags:    formData.Tags,
 	}
-	if err := p.Insert(); err != nil {
+	if err := p.InsertOne(); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
 	return c.JSON(200, echo.Map{
 		"message": "post created successfully",
+		"post":    p,
+	})
+}
+
+func getPost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	filter := bson.M{"_id": id, "_user": u.ID}
+
+	p, err := post.FindOne(filter)
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "post removed successfully",
 		"post":    p,
 	})
 }
