@@ -2,6 +2,7 @@ package post
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/MahdiRazaqi/nevees-backend/database"
@@ -29,6 +30,16 @@ func (p *Post) InsertOne() error {
 	p.ID = primitive.NewObjectID()
 	p.Created = time.Now()
 	_, err := p.collection().InsertOne(context.Background(), database.ConvertToBson(p))
+	return err
+}
+
+// DeleteOne post
+func DeleteOne(filter bson.M) error {
+	p := new(Post)
+	count, err := p.collection().DeleteOne(context.Background(), filter)
+	if count.DeletedCount == 0 && err == nil {
+		return errors.New("document cloud not be deleted")
+	}
 	return err
 }
 

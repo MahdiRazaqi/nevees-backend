@@ -37,6 +37,22 @@ func addPost(c echo.Context) error {
 	})
 }
 
+func removePost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	if err := post.DeleteOne(bson.M{"_id": id, "_user": u.ID}); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "post removed successfully",
+	})
+}
+
 func getPost(c echo.Context) error {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
