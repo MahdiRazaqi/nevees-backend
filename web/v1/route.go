@@ -18,7 +18,10 @@ func Register(e *echo.Echo) {
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)
-	postGroup.GET("/:id", getPost)
-	// postGroup.PUT("/:id", editPost)
+	postGroup.GET("/:id", getOnePost)
 	postGroup.DELETE("/:id", removePost)
+
+	tagGroup := r.Group("tag")
+	tagGroup.POST("", addTag)
+	tagGroup.GET("/:id", getOneTag)
 }

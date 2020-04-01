@@ -53,7 +53,7 @@ func removePost(c echo.Context) error {
 	})
 }
 
-func getPost(c echo.Context) error {
+func getOnePost(c echo.Context) error {
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
@@ -65,7 +65,6 @@ func getPost(c echo.Context) error {
 	}
 
 	return c.JSON(200, echo.Map{
-		"message": "post removed successfully",
-		"post":    p,
+		"post": p,
 	})
 }

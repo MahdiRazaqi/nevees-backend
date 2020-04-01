@@ -14,12 +14,12 @@ import (
 
 // User model
 type User struct {
-	ID       primitive.ObjectID `bson:"_id"`
-	Username string             `bson:"username"`
-	Fullname string             `bson:"fullname"`
-	Email    string             `bson:"email"`
-	Password string             `bson:"password"`
-	Created  time.Time          `bson:"created"`
+	ID       primitive.ObjectID `bson:"_id" json:"_id"`
+	Username string             `bson:"username" json:"username"`
+	Fullname string             `bson:"fullname" json:"fullname"`
+	Email    string             `bson:"email" json:"email"`
+	Password string             `bson:"password" json:"password"`
+	Created  time.Time          `bson:"created" json:"created"`
 }
 
 func (u *User) collection() *mongo.Collection {

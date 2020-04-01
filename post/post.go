@@ -13,12 +13,12 @@ import (
 
 // Post model
 type Post struct {
-	ID      primitive.ObjectID   `bson:"_id"`
-	Title   string               `bson:"title"`
-	Content string               `bson:"content"`
-	User    primitive.ObjectID   `bson:"_user"`
-	Tags    []primitive.ObjectID `bson:"_tags"`
-	Created time.Time            `bson:"created"`
+	ID      primitive.ObjectID   `bson:"_id" json:"_id"`
+	Title   string               `bson:"title" json:"title"`
+	Content string               `bson:"content" json:"content"`
+	User    primitive.ObjectID   `bson:"_user" json:"_user"`
+	Tags    []primitive.ObjectID `bson:"_tags" json:"_tags"`
+	Created time.Time            `bson:"created" json:"created"`
 }
 
 func (p *Post) collection() *mongo.Collection {
@@ -30,6 +30,12 @@ func (p *Post) InsertOne() error {
 	p.ID = primitive.NewObjectID()
 	p.Created = time.Now()
 	_, err := p.collection().InsertOne(context.Background(), database.ConvertToBson(p))
+	return err
+}
+
+// UpdateOne post
+func (p *Post) UpdateOne(filter bson.D) error {
+	_, err := p.collection().UpdateOne(context.Background(), filter, bson.M{"$set": database.ConvertToBson(p)})
 	return err
 }
 
