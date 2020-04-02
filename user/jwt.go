@@ -15,7 +15,7 @@ type customClaims struct {
 	jwt.StandardClaims
 }
 
-var signature string = config.CFG.JWT.SigningKey
+var signature = config.CFG.JWT.SigningKey
 
 // CreateToken generate new token
 func (u *User) CreateToken() (string, error) {

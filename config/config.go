@@ -21,7 +21,7 @@ type Config struct {
 const configPath = "./config.json"
 
 // CFG public config
-var CFG *Config
+var CFG Config
 
 // Load config file
 func Load() {
