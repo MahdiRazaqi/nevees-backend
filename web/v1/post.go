@@ -9,9 +9,9 @@ import (
 )
 
 type postForm struct {
-	Title   string               `json:"title" form:"title"`
-	Content string               `json:"content" form:"content"`
-	Tags    []primitive.ObjectID `json:"tags" form:"tags"`
+	Title   string   `json:"title" form:"title"`
+	Content string   `json:"content" form:"content"`
+	Tags    []string `json:"tags" form:"tags"`
 }
 
 func addPost(c echo.Context) error {
@@ -50,6 +50,39 @@ func removePost(c echo.Context) error {
 
 	return c.JSON(200, echo.Map{
 		"message": "post removed successfully",
+	})
+}
+
+func editPost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	id, err := primitive.ObjectIDFromHex(c.Param("id"))
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	formData := new(postForm)
+	if err := c.Bind(formData); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	filter := bson.M{"_id": id, "_user": u.ID}
+
+	p, err := post.FindOne(filter)
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	p.Title = formData.Title
+	p.Content = formData.Content
+	p.Tags = formData.Tags
+
+	if err := p.UpdateOne(filter); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "post updated successfully",
+		"post":    p,
 	})
 }
 
