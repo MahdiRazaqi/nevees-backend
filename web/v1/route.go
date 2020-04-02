@@ -6,7 +6,7 @@ import (
 	"github.com/labstack/echo/middleware"
 )
 
-var signature string = config.CFG.JWT.SigningKey
+var signature = config.CFG.JWT.SigningKey
 
 // Register routes
 func Register(e *echo.Echo) {
@@ -21,6 +21,7 @@ func Register(e *echo.Echo) {
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)
+	postGroup.GET("", getAllPosts)
 	postGroup.GET("/:id", getOnePost)
 	postGroup.PUT("/:id", editPost)
 	postGroup.DELETE("/:id", removePost)

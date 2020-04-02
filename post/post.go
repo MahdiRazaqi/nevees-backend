@@ -57,3 +57,24 @@ func FindOne(filter bson.M) (*Post, error) {
 	}
 	return p, nil
 }
+
+// Find post
+func Find(filter bson.M) ([]Post, error) {
+	p := new(Post)
+	ctx := context.Background()
+	cursor, err := p.collection().Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	posts := []Post{}
+	for cursor.Next(ctx) {
+		p := new(Post)
+		if err := cursor.Decode(p); err != nil {
+			continue
+		}
+		posts = append(posts, *p)
+	}
+
+	return posts, nil
+}

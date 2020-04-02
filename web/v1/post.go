@@ -101,3 +101,14 @@ func getOnePost(c echo.Context) error {
 		"post": p,
 	})
 }
+
+func getAllPosts(c echo.Context) error {
+	posts, err := post.Find(bson.M{})
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"posts": posts,
+	})
+}
