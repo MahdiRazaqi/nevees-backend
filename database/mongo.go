@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 
+	"github.com/MahdiRazaqi/nevees-backend/config"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -14,7 +15,7 @@ var MongoDB *mongo.Database
 
 // ConnectMongo Connect to MongoDB
 func ConnectMongo() {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	clientOptions := options.Client().ApplyURI(config.CFG.Mongo.Host)
 
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 	if err != nil {
@@ -25,7 +26,7 @@ func ConnectMongo() {
 		log.Fatal(err)
 	}
 
-	MongoDB = client.Database("nevees")
+	MongoDB = client.Database(config.CFG.Mongo.DB)
 }
 
 // ConvertToBson convert interface to bson object

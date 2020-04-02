@@ -1,9 +1,12 @@
 package v1
 
 import (
+	"github.com/MahdiRazaqi/nevees-backend/config"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
+
+var signature string = config.CFG.JWT.SigningKey
 
 // Register routes
 func Register(e *echo.Echo) {
@@ -14,10 +17,11 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/login", login)
 
 	r := v1.Group("/")
-	r.Use(middleware.JWT([]byte("secret-nevees")), userRequired)
+	r.Use(middleware.JWT([]byte(signature)), userRequired)
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)
 	postGroup.GET("/:id", getOnePost)
+	postGroup.PUT("/:id", editPost)
 	postGroup.DELETE("/:id", removePost)
 }

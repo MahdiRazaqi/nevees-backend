@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MahdiRazaqi/nevees-backend/config"
 	"github.com/dgrijalva/jwt-go"
 )
 
@@ -14,7 +15,7 @@ type customClaims struct {
 	jwt.StandardClaims
 }
 
-var signature string = "secret-nevees"
+var signature string = config.CFG.JWT.SigningKey
 
 // CreateToken generate new token
 func (u *User) CreateToken() (string, error) {
