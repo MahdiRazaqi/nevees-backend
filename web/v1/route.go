@@ -16,13 +16,15 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/register", register)
 	authGroup.POST("/login", login)
 
+	publicGroup := v1.Group("/public/post")
+	publicGroup.GET("", listPosts)
+	publicGroup.GET("/:id", onePost)
+
 	r := v1.Group("/")
 	r.Use(middleware.JWT([]byte(signature)), userRequired)
 
 	postGroup := r.Group("post")
 	postGroup.POST("", addPost)
-	postGroup.GET("", getAllPosts)
-	postGroup.GET("/:id", getOnePost)
 	postGroup.PUT("/:id", editPost)
 	postGroup.DELETE("/:id", removePost)
 }
