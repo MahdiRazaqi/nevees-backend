@@ -9,6 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Post model
@@ -59,10 +60,16 @@ func FindOne(filter bson.M) (*Post, error) {
 }
 
 // Find post
-func Find(filter bson.M) ([]Post, error) {
+func Find(filter bson.M, page, limit int) ([]Post, error) {
 	p := new(Post)
 	ctx := context.Background()
-	cursor, err := p.collection().Find(ctx, filter)
+	options := options.Find()
+	options.SetLimit(int64(limit))
+	if page > 0 {
+		options.SetSkip(int64((page - 1) * limit))
+	}
+
+	cursor, err := p.collection().Find(ctx, filter, options)
 	if err != nil {
 		return nil, err
 	}

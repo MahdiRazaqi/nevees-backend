@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"strconv"
+
 	"github.com/MahdiRazaqi/nevees-backend/post"
 	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/labstack/echo"
@@ -103,7 +105,10 @@ func getOnePost(c echo.Context) error {
 }
 
 func getAllPosts(c echo.Context) error {
-	posts, err := post.Find(bson.M{})
+	page, _ := strconv.Atoi(c.QueryParam("page"))
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+
+	posts, err := post.Find(bson.M{}, page, limit)
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
