@@ -14,6 +14,22 @@ type postForm struct {
 	Tags    []string `json:"tags" form:"tags"`
 }
 
+/**
+ * @api {post} /api/v1/post Add post
+ * @apiVersion 1.0.0
+ * @apiName addPost
+ * @apiGroup Post
+ *
+ * @apiParam {String} title post title
+ * @apiParam {String} content post content
+ * @apiParam {[]String} tags post tags
+ *
+ * @apiSuccess {String} message success message
+ * @apiSuccess {Object} post post model
+ *
+ * @apiError {String} error error message
+ */
+
 func addPost(c echo.Context) error {
 	u := c.Get("user").(*user.User)
 	formData := new(postForm)
@@ -37,6 +53,17 @@ func addPost(c echo.Context) error {
 	})
 }
 
+/**
+ * @api {delete} /api/v1/post/:id Remove post
+ * @apiVersion 1.0.0
+ * @apiName removePost
+ * @apiGroup Post
+ *
+ * @apiSuccess {String} message success message
+ *
+ * @apiError {String} error error message
+ */
+
 func removePost(c echo.Context) error {
 	u := c.Get("user").(*user.User)
 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
@@ -52,6 +79,22 @@ func removePost(c echo.Context) error {
 		"message": "post removed successfully",
 	})
 }
+
+/**
+ * @api {put} /api/v1/post/:id Edit post
+ * @apiVersion 1.0.0
+ * @apiName editPost
+ * @apiGroup Post
+ *
+ * @apiParam {String} title post title
+ * @apiParam {String} content post content
+ * @apiParam {[]String} tags post tags
+ *
+ * @apiSuccess {String} message success message
+ * @apiSuccess {Object} post post model
+ *
+ * @apiError {String} error error message
+ */
 
 func editPost(c echo.Context) error {
 	u := c.Get("user").(*user.User)
