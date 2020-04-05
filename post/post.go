@@ -73,6 +73,7 @@ func Find(filter bson.M, page, limit int) ([]Post, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer cursor.Close(ctx)
 
 	posts := []Post{}
 	for cursor.Next(ctx) {
