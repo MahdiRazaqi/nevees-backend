@@ -17,6 +17,23 @@ type loginForm struct {
 	Password string `json:"password" form:"password" validate:"required"`
 }
 
+/**
+ * @api {post} /api/v1/auth/register Register user
+ * @apiVersion 1.0.0
+ * @apiName register
+ * @apiGroup User
+ *
+ * @apiParam {String} username unique username
+ * @apiParam {String} email unique email
+ * @apiParam {String} password password
+ *
+ * @apiSuccess {String} message success message
+ * @apiSuccess {String} token user token access jwt
+ * @apiSuccess {Object} user user model
+ *
+ * @apiError {String} error error message
+ */
+
 func register(c echo.Context) error {
 	formData := new(registerForm)
 	if err := c.Bind(formData); err != nil {
@@ -48,6 +65,22 @@ func register(c echo.Context) error {
 		"user":    u.Mini(),
 	})
 }
+
+/**
+ * @api {post} /api/v1/auth/login Login user
+ * @apiVersion 1.0.0
+ * @apiName login
+ * @apiGroup User
+ *
+ * @apiParam {String} username unique username
+ * @apiParam {String} password password
+ *
+ * @apiSuccess {String} message success message
+ * @apiSuccess {String} token user token access jwt
+ * @apiSuccess {Object} user user model
+ *
+ * @apiError {String} error error message
+ */
 
 func login(c echo.Context) error {
 	formData := new(loginForm)
