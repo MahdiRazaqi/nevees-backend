@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"io/ioutil"
+	"log"
 )
 
 // Config Model
@@ -10,12 +11,12 @@ type Config struct {
 	JWT struct {
 		SigningKey string `json:"signing_key"`
 	} `json:"jwt"`
-	Mongo struct {
+	MySQL struct {
 		Host     string `json:"host"`
 		DB       string `json:"db"`
 		User     string `json:"user"`
 		Password string `json:"password"`
-	} `json:"mongo"`
+	} `json:"mysql"`
 }
 
 const configPath = "./config.json"
@@ -27,10 +28,10 @@ var CFG Config
 func Load() {
 	file, err := ioutil.ReadFile(configPath)
 	if err != nil {
-		panic(err)
+		log.Fatal("loading config file ", err)
 	}
 
 	if err := json.Unmarshal(file, &CFG); err != nil {
-		panic(err)
+		log.Fatal("loading config file ", err)
 	}
 }

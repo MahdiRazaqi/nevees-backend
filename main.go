@@ -8,6 +8,6 @@ import (
 
 func main() {
 	config.Load()
-	database.ConnectMongo()
+	database.Connect()
 	web.Start()
 }
