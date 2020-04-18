@@ -4,11 +4,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/jeyem/passwd"
-
 	"github.com/MahdiRazaqi/nevees-backend/database"
+	"github.com/jeyem/passwd"
 	"github.com/jinzhu/gorm"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 // User model
@@ -16,10 +14,10 @@ type User struct {
 	ID        uint      `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time `json:"created_at" gorm:"type:datetime"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"type:datetime"`
-	Username  string    `json:"username" gorm:"type:varchar(255)"`
+	Username  string    `json:"username" gorm:"type:varchar(255);unique;not null"`
 	Fullname  string    `json:"fullname" gorm:"type:varchar(255)"`
-	Email     string    `json:"email" gorm:"type:varchar(255)"`
-	Password  string    `json:"password" gorm:"type:varchar(255)"`
+	Email     string    `json:"email" gorm:"type:varchar(255);unique;not null"`
+	Password  string    `json:"password" gorm:"type:varchar(255);not null"`
 	Role      string    `json:"role" gorm:"type:varchar(255)"`
 }
 
@@ -60,8 +58,8 @@ func (u *User) AuthByUserPass(username, password string) error {
 }
 
 // Mini user data
-func (u *User) Mini() bson.M {
-	return bson.M{
+func (u *User) Mini() map[string]interface{} {
+	return map[string]interface{}{
 		"id":         u.ID,
 		"created_at": u.CreatedAt,
 		"updated_at": u.UpdatedAt,
