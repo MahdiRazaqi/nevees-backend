@@ -1,7 +1,10 @@
 package user
 
 import (
+	"errors"
 	"time"
+
+	"github.com/jeyem/passwd"
 
 	"github.com/MahdiRazaqi/nevees-backend/database"
 	"github.com/jinzhu/gorm"
@@ -37,26 +40,24 @@ func (u *User) FindOne(order string, cond interface{}, args ...interface{}) erro
 	return u.table().Where(cond, args...).Order(order).First(u).Error
 }
 
-// // Insert user to database
-// func (u *xx) Insert() error {
-// 	q, err := database.MySQL.Prepare("INSERT INTO users (username) VALUES (?)")
-// 	q.Exec("test")
-// 	defer q.Close()
+// LoadByUsername load user from username
+func (u *User) LoadByUsername(username string) error {
+	return u.FindOne("", "username = ?", username)
+}
 
-// 	return err
-// }
+// AuthByUserPass authenticate user with username and password
+func (u *User) AuthByUserPass(username, password string) error {
+	err := errors.New("username or password not matched")
 
-// // // Insert user to database
-// // func (u *User) Insert() error {
-// // 	u.ID = primitive.NewObjectID()
-// // 	u.Created = time.Now()
-// // 	_, err := u.collection().InsertOne(context.Background(), database.ConvertToBson(u))
-// // 	return err
-// // }
+	if u.LoadByUsername(username) != nil {
+		return err
+	}
 
-// func (u *User) collection() *mongo.Collection {
-// 	return database.MongoDB.Collection("user")
-// }
+	if !passwd.Check(password, u.Password) {
+		return err
+	}
+	return nil
+}
 
 // Mini user data
 func (u *User) Mini() bson.M {
@@ -70,52 +71,3 @@ func (u *User) Mini() bson.M {
 		"role":       u.Role,
 	}
 }
-
-// // AuthByUserPass authenticate user with username and password
-// func AuthByUserPass(username, password string) (*User, error) {
-// 	authError := errors.New("username or password not matched")
-
-// 	u, err := LoadByUsername(username)
-// 	if err != nil {
-// 		return nil, authError
-// 	}
-
-// 	if !passwd.Check(password, u.Password) {
-// 		return nil, authError
-// 	}
-
-// 	return u, nil
-// }
-
-// // LoadByUsername load user from username
-// func LoadByUsername(username string) (*User, error) {
-// 	return FindOne(bson.M{"username": username})
-// }
-
-// // FindOne fine one user from database
-// func FindOne(filter bson.M) (*User, error) {
-// 	u := new(User)
-// 	if err := u.collection().FindOne(context.Background(), filter).Decode(u); err != nil {
-// 		return nil, err
-// 	}
-// 	return u, nil
-// }
-
-// // Insert user to database
-// func (u *User) Insert() error {
-// 	u.ID = primitive.NewObjectID()
-// 	u.Created = time.Now()
-// 	_, err := u.collection().InsertOne(context.Background(), database.ConvertToBson(u))
-// 	return err
-// }
-
-// // // Insert user to database
-// // func (u *User) Insert() error {
-// // 	test := &User{}
-// // 	s := table().Create(u).Find(&test)
-// // 	// _, err := u.collection().InsertOne(context.Background(), database.ConvertToBson(u))
-// // 	// return err
-// // 	fmt.Println(test)
-// // 	fmt.Println(s)
-// // 	return errors.New("sdfjsfdlkjsdkf")
-// // }

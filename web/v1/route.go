@@ -13,7 +13,7 @@ func Register(e *echo.Echo) {
 
 	authGroup := v1.Group("/auth")
 	authGroup.POST("/register", register)
-	// authGroup.POST("/login", login)
+	authGroup.POST("/login", login)
 
 	// publicGroup := v1.Group("/public/post")
 	// publicGroup.GET("", listPosts)
