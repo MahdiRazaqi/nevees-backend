@@ -7,7 +7,6 @@ import (
 )
 
 // import (
-// 	"github.com/MahdiRazaqi/nevees-backend/user"
 // 	"github.com/jeyem/passwd"
 // 	"github.com/labstack/echo"
 // )
@@ -66,15 +65,10 @@ func register(c echo.Context) error {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
 
-	// return c.JSON(200, echo.Map{
-	// 	"message": "registered successfully",
-	// 	"token":   t,
-	// 	"user":    u.Mini(),
-	// })
 	return c.JSON(200, echo.Map{
 		"message": "registered successfully",
 		"token":   t,
-		"user":    u,
+		"user":    u.Mini(),
 	})
 }
 

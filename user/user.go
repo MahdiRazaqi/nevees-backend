@@ -3,72 +3,39 @@ package user
 import (
 	"time"
 
-	"github.com/MahdiRazaqi/nevees-backend/database/mysql"
+	"github.com/MahdiRazaqi/nevees-backend/database"
+	"github.com/jinzhu/gorm"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // User model
 type User struct {
-	ID       int       `json:"id" mysql:"id INT(255) NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT"`
-	Created  time.Time `json:"created" mysql:"created VARCHAR(255)"`
-	Username string    `json:"username" mysql:"username VARCHAR(255) NOT NULL UNIQUE"`
-	Fullname string    `json:"fullname" mysql:"fullname VARCHAR(255)"`
-	Email    string    `json:"email" mysql:"email VARCHAR(255) NOT NULL UNIQUE"`
-	Password string    `json:"password" mysql:"password VARCHAR(255) NOT NULL"`
-	Role     string    `json:"role" mysql:"role VARCHAR(255)"`
+	ID        uint      `json:"id" gorm:"primary_key"`
+	CreatedAt time.Time `json:"created_at" gorm:"type:datetime"`
+	UpdatedAt time.Time `json:"updated_at" gorm:"type:datetime"`
+	Username  string    `json:"username" gorm:"type:varchar(255)"`
+	Fullname  string    `json:"fullname" gorm:"type:varchar(255)"`
+	Email     string    `json:"email" gorm:"type:varchar(255)"`
+	Password  string    `json:"password" gorm:"type:varchar(255)"`
+	Role      string    `json:"role" gorm:"type:varchar(255)"`
 }
 
-func (u *User) table() *mysql.Database {
-	return mysql.MySQL.Table("users", User{})
+func (u *User) table() *gorm.DB {
+	if !database.MySQL.HasTable(u) {
+		return database.MySQL.CreateTable(u)
+	}
+	return database.MySQL
 }
 
-// Insert user to Database
+// Insert user to database
 func (u *User) Insert() error {
-	u.Created = time.Now()
-	return u.table().Insert(*u)
+	return u.table().Create(u).Error
 }
 
-// Find user to Database
-func (u *User) Find() error {
-	return u.table().Select(u)
+// FindOne user from database
+func (u *User) FindOne(order string, cond interface{}, args ...interface{}) error {
+	return u.table().Where(cond, args...).Order(order).First(u).Error
 }
-
-// // User model
-// type User struct {
-// 	ID       primitive.ObjectID `bson:"_id" json:"_id"`
-// 	Username string             `bson:"username" json:"username"`
-// 	Fullname string             `bson:"fullname" json:"fullname"`
-// 	Email    string             `bson:"email" json:"email"`
-// 	Password string             `bson:"password" json:"password"`
-// 	Created  time.Time          `bson:"created" json:"created"`
-// }
-
-// // // User model
-// // type User struct {
-// // 	gorm.Model
-// // 	Username string `gorm:"column:username"`
-// // 	Fullname string `gorm:"column:fullname"`
-// // 	Email    string `gorm:"column:email"`
-// // 	Password string `gorm:"column:password"`
-// // 	Role     string `gorm:"column:role"`
-// // }
-
-// // func table() *gorm.DB {
-// // 	if !database.MySQL.HasTable(&User{}) {
-// // 		return database.MySQL.Table("users").CreateTable(&User{})
-// // 	}
-// // 	return database.MySQL.Table("users")
-// // }
-
-// // User model
-// type xx struct {
-// 	ID       int
-// 	Created  *time.Time
-// 	Username string
-// 	Fullname string
-// 	Email    string
-// 	Password string
-// 	Role     string
-// }
 
 // // Insert user to database
 // func (u *xx) Insert() error {
@@ -91,15 +58,18 @@ func (u *User) Find() error {
 // 	return database.MongoDB.Collection("user")
 // }
 
-// // Mini user data
-// func (u *User) Mini() bson.M {
-// 	return bson.M{
-// 		"id":       u.ID,
-// 		"username": u.Username,
-// 		"fullname": u.Fullname,
-// 		"email":    u.Email,
-// 	}
-// }
+// Mini user data
+func (u *User) Mini() bson.M {
+	return bson.M{
+		"id":         u.ID,
+		"created_at": u.CreatedAt,
+		"updated_at": u.UpdatedAt,
+		"username":   u.Username,
+		"fullname":   u.Fullname,
+		"email":      u.Email,
+		"role":       u.Role,
+	}
+}
 
 // // AuthByUserPass authenticate user with username and password
 // func AuthByUserPass(username, password string) (*User, error) {
