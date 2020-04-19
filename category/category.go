@@ -12,10 +12,7 @@ type Category struct {
 	ID        uint      `json:"id" gorm:"primary_key"`
 	CreatedAt time.Time `json:"created_at" gorm:"type:datetime"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"type:datetime"`
-	Title     string    `json:"title" gorm:"type:varchar(255)"`
-	Body      string    `json:"body" gorm:"type:text"`
-	Thumbnail string    `json:"thumbnail" gorm:"type:varchar(255)"`
-	UserID    int       `json:"user_id" gorm:"type:int;foreignkey;not null"`
+	Name      string    `json:"name" gorm:"type:varchar(255)"`
 }
 
 func (c *Category) table() *gorm.DB {
