@@ -1,6 +1,7 @@
 package user
 
 import (
+	"errors"
 	"net/http"
 	"strings"
 	"time"
@@ -38,13 +39,14 @@ func parseToken(tokenString string) (*jwt.Token, error) {
 	})
 }
 
-// // LoadByToken load user from token
-// func LoadByToken(token string) (*User, error) {
-// 	t, _ := parseToken(token)
+// LoadByToken load user from token
+func (u *User) LoadByToken(token string) error {
+	t, _ := parseToken(token)
 
-// 	claims, ok := t.Claims.(*customClaims)
-// 	if !ok {
-// 		return nil, errors.New("converting token failed")
-// 	}
-// 	return LoadByUsername(claims.Username)
-// }
+	claims, ok := t.Claims.(*customClaims)
+	if !ok {
+		return errors.New("converting token failed")
+	}
+
+	return u.LoadByUsername(claims.Username)
+}
