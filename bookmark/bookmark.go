@@ -47,6 +47,7 @@ func (b *Bookmark) Save() error {
 }
 
 // Delete bookmark from database
-func (b *Bookmark) Delete() error {
-	return b.table().Delete(b).Error
+func Delete(cond interface{}, args ...interface{}) error {
+	b := &Bookmark{}
+	return b.table().Where(cond, args...).Delete(b).Error
 }

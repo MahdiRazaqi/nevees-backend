@@ -46,6 +46,7 @@ func (c *Category) Save() error {
 }
 
 // Delete category from database
-func (c *Category) Delete() error {
-	return c.table().Delete(c).Error
+func Delete(cond interface{}, args ...interface{}) error {
+	c := &Category{}
+	return c.table().Where(cond, args...).Delete(c).Error
 }

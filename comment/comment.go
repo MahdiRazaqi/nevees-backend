@@ -49,6 +49,7 @@ func (c *Comment) Save() error {
 }
 
 // Delete comment from database
-func (c *Comment) Delete() error {
-	return c.table().Delete(c).Error
+func Delete(cond interface{}, args ...interface{}) error {
+	c := &Comment{}
+	return c.table().Where(cond, args...).Delete(c).Error
 }

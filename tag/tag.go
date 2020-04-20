@@ -47,6 +47,7 @@ func (t *Tag) Save() error {
 }
 
 // Delete tag from database
-func (t *Tag) Delete() error {
-	return t.table().Delete(t).Error
+func Delete(cond interface{}, args ...interface{}) error {
+	t := &Tag{}
+	return t.table().Where(cond, args...).Delete(t).Error
 }
