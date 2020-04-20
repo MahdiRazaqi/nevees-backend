@@ -62,21 +62,18 @@ func addPost(c echo.Context) error {
  * @apiError {String} error error message
  */
 
-// func removePost(c echo.Context) error {
-// 	u := c.Get("user").(*user.User)
-// 	id, err := primitive.ObjectIDFromHex(c.Param("id"))
-// 	if err != nil {
-// 		return c.JSON(400, echo.Map{"error": err.Error()})
-// 	}
+func removePost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	id := c.Param("id")
 
-// 	if err := post.DeleteOne(bson.M{"_id": id, "_user": u.ID}); err != nil {
-// 		return c.JSON(400, echo.Map{"error": err.Error()})
-// 	}
+	if err := post.Delete("id = ? and user_id = ?", id, u.ID); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
 
-// 	return c.JSON(200, echo.Map{
-// 		"message": "post removed successfully",
-// 	})
-// }
+	return c.JSON(200, echo.Map{
+		"message": "post removed successfully",
+	})
+}
 
 /**
  * @api {put} /api/v1/post/:id Edit post

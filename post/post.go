@@ -49,6 +49,7 @@ func (p *Post) Save() error {
 }
 
 // Delete post from database
-func (p *Post) Delete() error {
-	return p.table().Delete(p).Error
+func Delete(cond interface{}, args ...interface{}) error {
+	p := &Post{}
+	return p.table().Where(cond, args...).Delete(p).Error
 }
