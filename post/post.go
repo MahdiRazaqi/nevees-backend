@@ -20,9 +20,9 @@ type Post struct {
 
 func (p *Post) table() *gorm.DB {
 	if !database.MySQL.HasTable(p) {
-		return database.MySQL.CreateTable(p)
+		return database.MySQL.Model(p).CreateTable(p)
 	}
-	return database.MySQL
+	return database.MySQL.Model(p)
 }
 
 // Insert post to database
@@ -41,11 +41,6 @@ func Find(limit int, page int, order string, cond interface{}, args ...interface
 	posts := &[]Post{}
 	err := p.table().Where(cond, args...).Order(order).Limit(limit).Offset(page - 1).Find(posts).Error
 	return posts, err
-}
-
-// Save post from database
-func (p *Post) Save() error {
-	return p.table().Save(p).Error
 }
 
 // Delete post from database
