@@ -1,10 +1,11 @@
 package post
 
 import (
+	"errors"
 	"time"
 
-	"github.com/MahdiRazaqi/nevees-backend/database"
 	"github.com/jinzhu/gorm"
+	"github.com/neveesco/nevees-backend/database"
 )
 
 // Post model
@@ -46,5 +47,10 @@ func Find(limit int, page int, order string, cond interface{}, args ...interface
 // Delete post from database
 func Delete(cond interface{}, args ...interface{}) error {
 	p := &Post{}
-	return p.table().Where(cond, args...).Delete(p).Error
+	q := p.table().Where(cond, args...).Delete(p)
+
+	if q.Error == nil && q.RowsAffected == 0 {
+		return errors.New("not found record")
+	}
+	return q.Error
 }
