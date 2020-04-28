@@ -32,8 +32,8 @@ func (p *Post) Insert() error {
 }
 
 // FindOne post from database
-func (p *Post) FindOne(order string, cond interface{}, args ...interface{}) error {
-	return p.table().Where(cond, args...).Order(order).First(p).Error
+func (p *Post) FindOne(cond interface{}, args ...interface{}) error {
+	return p.table().Where(cond, args...).First(p).Error
 }
 
 // Find posts from database
@@ -47,10 +47,10 @@ func Find(limit int, page int, order string, cond interface{}, args ...interface
 // Delete post from database
 func Delete(cond interface{}, args ...interface{}) error {
 	p := &Post{}
-	q := p.table().Where(cond, args...).Delete(p)
+	query := p.table().Where(cond, args...).Delete(p)
 
-	if q.Error == nil && q.RowsAffected == 0 {
-		return errors.New("not found record")
+	if query.Error == nil && query.RowsAffected == 0 {
+		return errors.New("record not found")
 	}
-	return q.Error
+	return query.Error
 }

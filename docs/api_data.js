@@ -98,6 +98,42 @@ define({ "api": [
     "groupTitle": "Post"
   },
   {
+    "type": "get",
+    "url": "/api/v1/public/post/:id",
+    "title": "Get a post",
+    "version": "1.0.0",
+    "name": "onePost",
+    "group": "Post",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "post",
+            "description": "<p>post model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/public.go",
+    "groupTitle": "Post"
+  },
+  {
     "type": "delete",
     "url": "/api/v1/post/:id",
     "title": "Remove post",
