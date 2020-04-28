@@ -17,7 +17,7 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/login", login)
 
 	publicGroup := v1.Group("/public/post")
-	// publicGroup.GET("", listPosts)
+	publicGroup.GET("", listPosts)
 	publicGroup.GET("/:id", onePost)
 
 	r := v1.Group("/")
