@@ -54,6 +54,35 @@ func addPost(c echo.Context) error {
 }
 
 /**
+ * @api {get} /api/v1/post List my posts
+ * @apiVersion 1.0.0
+ * @apiName listMyPosts
+ * @apiGroup Post
+ *
+ * @apiParam {Number} page list page
+ * @apiParam {Number} limit list limit
+ *
+ * @apiSuccess {[]Object} post array of posts model
+ *
+ * @apiError {String} error error message
+ */
+
+func listMyPosts(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	page, _ := strconv.Atoi(c.QueryParam("page"))
+	limit, _ := strconv.Atoi(c.QueryParam("limit"))
+
+	posts, err := post.Find(limit, page, "", "user_id = ?", u.ID)
+	if err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"posts": posts,
+	})
+}
+
+/**
  * @api {put} /api/v1/post/:id Edit post
  * @apiVersion 1.0.0
  * @apiName editPost
