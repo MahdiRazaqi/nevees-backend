@@ -98,6 +98,125 @@ define({ "api": [
     "groupTitle": "Post"
   },
   {
+    "type": "put",
+    "url": "/api/v1/post/:id",
+    "title": "Edit post",
+    "version": "1.0.0",
+    "name": "editPost",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>post title</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body",
+            "description": "<p>post body</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "thumbnail",
+            "description": "<p>post thumbnail</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/post.go",
+    "groupTitle": "Post"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/post",
+    "title": "List my posts",
+    "version": "1.0.0",
+    "name": "listMyPosts",
+    "group": "Post",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>list page</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>list limit</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "[]Object",
+            "optional": false,
+            "field": "post",
+            "description": "<p>array of posts model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/post.go",
+    "groupTitle": "Post"
+  },
+  {
     "type": "get",
     "url": "/api/v1/public/post",
     "title": "List posts",
