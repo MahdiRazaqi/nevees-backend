@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"strconv"
+
 	"github.com/labstack/echo"
 	"github.com/neveesco/nevees-backend/post"
 	"github.com/neveesco/nevees-backend/user"
@@ -39,7 +41,7 @@ func addPost(c echo.Context) error {
 		Title:     formData.Title,
 		Body:      formData.Body,
 		Thumbnail: formData.Thumbnail,
-		UserID:    int(u.ID),
+		UserID:    u.ID,
 	}
 	if err := p.Insert(); err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
@@ -48,6 +50,45 @@ func addPost(c echo.Context) error {
 	return c.JSON(200, echo.Map{
 		"message": "post created successfully",
 		"post":    p,
+	})
+}
+
+/**
+ * @api {put} /api/v1/post/:id Edit post
+ * @apiVersion 1.0.0
+ * @apiName editPost
+ * @apiGroup Post
+ *
+ * @apiParam {String} title post title
+ * @apiParam {String} body post body
+ * @apiParam {String} thumbnail post thumbnail
+ *
+ * @apiSuccess {String} message success message
+ *
+ * @apiError {String} error error message
+ */
+
+func editPost(c echo.Context) error {
+	u := c.Get("user").(*user.User)
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	formData := new(postForm)
+	if err := c.Bind(formData); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	p := &post.Post{
+		ID:        uint(id),
+		Title:     formData.Title,
+		Body:      formData.Body,
+		Thumbnail: formData.Thumbnail,
+	}
+	if err := p.Update("user_id = ?", u.ID); err != nil {
+		return c.JSON(400, echo.Map{"error": err.Error()})
+	}
+
+	return c.JSON(200, echo.Map{
+		"message": "post updated successfully",
 	})
 }
 

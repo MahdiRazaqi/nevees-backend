@@ -16,7 +16,7 @@ type Post struct {
 	Title     string    `json:"title" gorm:"type:varchar(255)"`
 	Body      string    `json:"body" gorm:"type:text"`
 	Thumbnail string    `json:"thumbnail" gorm:"type:varchar(255)"`
-	UserID    int       `json:"user_id" gorm:"type:int;foreignkey;not null"`
+	UserID    uint      `json:"user_id" gorm:"type:int;foreignkey;not null"`
 }
 
 func (p *Post) table() *gorm.DB {
@@ -42,6 +42,16 @@ func Find(limit int, page int, order string, cond interface{}, args ...interface
 	posts := &[]Post{}
 	err := p.table().Where(cond, args...).Order(order).Limit(limit).Offset(page - 1).Find(posts).Error
 	return posts, err
+}
+
+// Update post from database
+func (p *Post) Update(cond interface{}, args ...interface{}) error {
+	query := p.table().Where(cond, args...).Updates(p)
+
+	if query.Error == nil && query.RowsAffected == 0 {
+		return errors.New("record not found")
+	}
+	return query.Error
 }
 
 // Delete post from database
