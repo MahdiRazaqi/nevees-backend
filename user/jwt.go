@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MahdiRazaqi/nevees-backend/config"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/neveesco/nevees-backend/config"
 )
 
 type customClaims struct {

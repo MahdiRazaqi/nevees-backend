@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"github.com/MahdiRazaqi/nevees-backend/config"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	"github.com/neveesco/nevees-backend/config"
 )
 
 var signature = config.CFG.JWT.SigningKey

@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"github.com/MahdiRazaqi/nevees-backend/post"
-	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/labstack/echo"
+	"github.com/neveesco/nevees-backend/post"
+	"github.com/neveesco/nevees-backend/user"
 )
 
 type postForm struct {
@@ -19,8 +19,8 @@ type postForm struct {
  * @apiGroup Post
  *
  * @apiParam {String} title post title
- * @apiParam {String} content post content
- * @apiParam {[]String} tags post tags
+ * @apiParam {String} body post body
+ * @apiParam {String} thumbnail post thumbnail
  *
  * @apiSuccess {String} message success message
  * @apiSuccess {Object} post post model

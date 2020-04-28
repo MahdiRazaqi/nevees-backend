@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/labstack/echo"
+	"github.com/neveesco/nevees-backend/user"
 )
 
 func userRequired(next echo.HandlerFunc) echo.HandlerFunc {

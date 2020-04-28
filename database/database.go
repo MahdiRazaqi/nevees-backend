@@ -3,9 +3,9 @@ package database
 import (
 	"log"
 
-	"github.com/MahdiRazaqi/nevees-backend/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql" //mysql driver
+	"github.com/neveesco/nevees-backend/config"
 )
 
 // MySQL connection

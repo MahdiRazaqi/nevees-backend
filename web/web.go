@@ -1,9 +1,9 @@
 package web
 
 import (
-	v1 "github.com/MahdiRazaqi/nevees-backend/web/v1"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo"
+	v1 "github.com/neveesco/nevees-backend/web/v1"
 )
 
 type customValidator struct {

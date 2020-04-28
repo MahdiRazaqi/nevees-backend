@@ -1,9 +1,9 @@
 package v1
 
 import (
-	"github.com/MahdiRazaqi/nevees-backend/user"
 	"github.com/jeyem/passwd"
 	"github.com/labstack/echo"
+	"github.com/neveesco/nevees-backend/user"
 )
 
 type registerForm struct {

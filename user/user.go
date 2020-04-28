@@ -4,9 +4,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/MahdiRazaqi/nevees-backend/database"
 	"github.com/jeyem/passwd"
 	"github.com/jinzhu/gorm"
+	"github.com/neveesco/nevees-backend/database"
 )
 
 // User model

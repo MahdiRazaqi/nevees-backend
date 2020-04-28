@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/MahdiRazaqi/nevees-backend/config"
-	"github.com/MahdiRazaqi/nevees-backend/database"
-	"github.com/MahdiRazaqi/nevees-backend/web"
+	"github.com/neveesco/nevees-backend/config"
+	"github.com/neveesco/nevees-backend/database"
+	"github.com/neveesco/nevees-backend/web"
 )
 
 func main() {

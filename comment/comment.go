@@ -3,8 +3,8 @@ package comment
 import (
 	"time"
 
-	"github.com/MahdiRazaqi/nevees-backend/database"
 	"github.com/jinzhu/gorm"
+	"github.com/neveesco/nevees-backend/database"
 )
 
 // Comment model
