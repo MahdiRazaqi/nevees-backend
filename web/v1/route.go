@@ -28,4 +28,8 @@ func Register(e *echo.Echo) {
 	postGroup.GET("", listMyPosts)
 	postGroup.PUT("/:id", editPost)
 	postGroup.DELETE("/:id", removePost)
+
+	bookmarkGroup := r.Group("bookmark")
+	bookmarkGroup.POST("", addToBookmark)
+	bookmarkGroup.DELETE("/:id", removeFromBookmark)
 }
