@@ -187,6 +187,13 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>post id</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Number",
             "optional": false,
             "field": "page",

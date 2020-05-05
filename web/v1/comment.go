@@ -56,6 +56,7 @@ func addComment(c echo.Context) error {
  * @apiName listComments
  * @apiGroup Comment
  *
+ * @apiParam {number} post_id post id
  * @apiParam {Number} page list page
  * @apiParam {Number} limit list limit
  *
@@ -65,10 +66,11 @@ func addComment(c echo.Context) error {
  */
 
 func listComments(c echo.Context) error {
+	postID := c.QueryParam("post_id")
 	page, _ := strconv.Atoi(c.QueryParam("page"))
 	limit, _ := strconv.Atoi(c.QueryParam("limit"))
 
-	comments, err := comment.Find(limit, page, "", "")
+	comments, err := comment.Find(limit, page, "", "post_id = ?", postID)
 	if err != nil {
 		return c.JSON(400, echo.Map{"error": err.Error()})
 	}
