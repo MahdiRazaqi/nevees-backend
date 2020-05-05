@@ -16,9 +16,10 @@ func Register(e *echo.Echo) {
 	authGroup.POST("/register", register)
 	authGroup.POST("/login", login)
 
-	publicGroup := v1.Group("/public/post")
-	publicGroup.GET("", listPosts)
-	publicGroup.GET("/:id", onePost)
+	publicGroup := v1.Group("/public/")
+	publicGroup.GET("post", listPosts)
+	publicGroup.GET("post/:id", onePost)
+	publicGroup.GET("comment", listComments)
 
 	r := v1.Group("/")
 	r.Use(middleware.JWT([]byte(signature)), userRequired)
@@ -32,4 +33,7 @@ func Register(e *echo.Echo) {
 	bookmarkGroup := r.Group("bookmark")
 	bookmarkGroup.POST("", addToBookmark)
 	bookmarkGroup.DELETE("/:id", removeFromBookmark)
+
+	commentGroup := r.Group("comment")
+	commentGroup.POST("", addComment)
 }
