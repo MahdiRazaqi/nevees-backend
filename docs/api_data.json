@@ -29,6 +29,210 @@
   },
   {
     "type": "post",
+    "url": "/api/v1/bookmark",
+    "title": "Add to bookmark",
+    "version": "1.0.0",
+    "name": "addToBookmark",
+    "group": "Bookmark",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>post id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/bookmark.go",
+    "groupTitle": "Bookmark"
+  },
+  {
+    "type": "delete",
+    "url": "/api/v1/bookmark/:id",
+    "title": "Remove from bookmark",
+    "version": "1.0.0",
+    "name": "removeFromBookmark",
+    "group": "Bookmark",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/bookmark.go",
+    "groupTitle": "Bookmark"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/comment",
+    "title": "Add comment",
+    "version": "1.0.0",
+    "name": "addComment",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "body",
+            "description": "<p>comment body</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>post id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "comment",
+            "description": "<p>comment model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/comment.go",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/public/comment",
+    "title": "List comments",
+    "version": "1.0.0",
+    "name": "listComments",
+    "group": "Comment",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>list page</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>list limit</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "[]Object",
+            "optional": false,
+            "field": "comments",
+            "description": "<p>array of comment model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/comment.go",
+    "groupTitle": "Comment"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/post",
     "title": "Add post",
     "version": "1.0.0",
@@ -194,8 +398,8 @@
             "group": "Success 200",
             "type": "[]Object",
             "optional": false,
-            "field": "post",
-            "description": "<p>array of posts model</p>"
+            "field": "posts",
+            "description": "<p>array of post model</p>"
           }
         ]
       }
@@ -250,8 +454,8 @@
             "group": "Success 200",
             "type": "[]Object",
             "optional": false,
-            "field": "post",
-            "description": "<p>array of posts model</p>"
+            "field": "posts",
+            "description": "<p>array of post model</p>"
           }
         ]
       }
@@ -269,7 +473,7 @@
         ]
       }
     },
-    "filename": "./web/v1/public.go",
+    "filename": "./web/v1/post.go",
     "groupTitle": "Post"
   },
   {
@@ -305,7 +509,7 @@
         ]
       }
     },
-    "filename": "./web/v1/public.go",
+    "filename": "./web/v1/post.go",
     "groupTitle": "Post"
   },
   {
