@@ -557,6 +557,174 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/api/v1/posttag",
+    "title": "Add posttag",
+    "version": "1.0.0",
+    "name": "addPosttag",
+    "group": "Posttag",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "tag_id",
+            "description": "<p>tag id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "post_id",
+            "description": "<p>post id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/posttag.go",
+    "groupTitle": "Posttag"
+  },
+  {
+    "type": "post",
+    "url": "/api/v1/tag",
+    "title": "Add tag",
+    "version": "1.0.0",
+    "name": "addTag",
+    "group": "Tag",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>tag title</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>success message</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "tag",
+            "description": "<p>tag model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/tag.go",
+    "groupTitle": "Tag"
+  },
+  {
+    "type": "get",
+    "url": "/api/v1/public/tag",
+    "title": "List tags",
+    "version": "1.0.0",
+    "name": "listTags",
+    "group": "Tag",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "page",
+            "description": "<p>list page</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>list limit</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "[]Object",
+            "optional": false,
+            "field": "tags",
+            "description": "<p>array of tag model</p>"
+          }
+        ]
+      }
+    },
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "type": "String",
+            "optional": false,
+            "field": "error",
+            "description": "<p>error message</p>"
+          }
+        ]
+      }
+    },
+    "filename": "./web/v1/tag.go",
+    "groupTitle": "Tag"
+  },
+  {
+    "type": "post",
     "url": "/api/v1/auth/login",
     "title": "Login user",
     "version": "1.0.0",

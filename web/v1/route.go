@@ -20,6 +20,7 @@ func Register(e *echo.Echo) {
 	publicGroup.GET("post", listPosts)
 	publicGroup.GET("post/:id", onePost)
 	publicGroup.GET("comment", listComments)
+	publicGroup.GET("tag", listTags)
 
 	r := v1.Group("/")
 	r.Use(middleware.JWT([]byte(signature)), userRequired)
@@ -36,4 +37,10 @@ func Register(e *echo.Echo) {
 
 	commentGroup := r.Group("comment")
 	commentGroup.POST("", addComment)
+
+	tagGroup := r.Group("tag")
+	tagGroup.POST("", addTag)
+
+	posttagGroup := r.Group("posttag")
+	posttagGroup.POST("", addPosttag)
 }
